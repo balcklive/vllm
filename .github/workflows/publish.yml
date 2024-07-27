@@ -7,8 +7,8 @@ on:
   workflow_dispatch:
 
 # Needed to create release and upload assets
-permissions:
-  contents: write
+# permissions:
+ # contents: write
 
 jobs:
   release:
