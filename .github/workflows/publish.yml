@@ -17,8 +17,8 @@ jobs:
     # Retrieve tag and create release
     name: Create Release
     runs-on: ubuntu-latest
-    outputs:
-      upload_url: ${{ steps.create_release.outputs.upload_url }}
+ #   outputs:
+  #    upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -33,16 +33,16 @@ jobs:
         uses: "actions/github-script@v6"
         env:
           RELEASE_TAG: ${{ env.release_tag }}
-        with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-          script: |
-            const script = require('.github/workflows/scripts/create_release.js')
-            await script(github, context, core)
+  #      with:
+ #6783         github-token: "${{ secrets.GITHUB_TOKEN }}"
+  #        script: |
+  #          const script = require('.github/workflows/scripts/create_release.js')
+   #         await script(github, context, core)
 
   wheel:
     name: Build Wheel
     runs-on: ${{ matrix.os }}
-    needs: release
+  #  needs: release
 
     strategy:
       fail-fast: false
@@ -58,9 +58,9 @@ jobs:
 
       - name: Setup ccache
         uses: hendrikmuhs/ccache-action@v1.2
-        with:
-          create-symlink: true
-          key: ${{ github.job }}-${{ matrix.python-version }}-${{ matrix.cuda-version }}
+    #    with:
+    #      create-symlink: true
+    #      key: ${{ github.job }}-${{ matrix.python-version }}-${{ matrix.cuda-version }}
 
       - name: Set up Linux Env
         if: ${{ runner.os == 'Linux' }}
