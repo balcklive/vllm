@@ -42,7 +42,7 @@ jobs:
   wheel:
     name: Build Wheel
     runs-on: ${{ matrix.os }}
-   # needs: release
+    needs: release
 
     strategy:
       fail-fast: false
@@ -91,12 +91,20 @@ jobs:
           echo "wheel_name=${wheel_name}" >> $GITHUB_ENV
           echo "asset_name=${asset_name}" >> $GITHUB_ENV
 
-#      - name: Upload Release Asset
-#        uses: actions/upload-release-asset@v1
-#        env:
- #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #      with:
-  #        upload_url: ${{ needs.release.outputs.upload_url }}
-   #       asset_path: ./dist/${{ env.wheel_name }}
-   #       asset_name: ${{ env.asset_name }}
-    #      asset_content_type: application/*
+    #  - name: Upload Release Asset
+     #   uses: actions/upload-release-asset@v1
+    #    env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #  with:
+     #     upload_url: ${{ needs.release.outputs.upload_url }}
+      #    asset_path: ./dist/${{ env.wheel_name }}
+      #    asset_name: ${{ env.asset_name }}
+      #    asset_content_type: application/*
+
+      # (Danielkinz): This last step will publish the .whl to pypi. Warning: untested
+      # - name: Publish package
+      #   uses: pypa/gh-action-pypi-publish@release/v1.8
+      #   with:
+      #     repository-url: https://test.pypi.org/legacy/
+      #     password: ${{ secrets.PYPI_API_TOKEN }}
+      #     skip-existing: true
