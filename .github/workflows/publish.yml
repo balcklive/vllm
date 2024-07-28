@@ -17,8 +17,8 @@ jobs:
     # Retrieve tag and create release
     name: Create Release
     runs-on: ubuntu-latest
- #   outputs:
-  #    upload_url: ${{ steps.create_release.outputs.upload_url }}
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -33,16 +33,16 @@ jobs:
         uses: "actions/github-script@v6"
         env:
           RELEASE_TAG: ${{ env.release_tag }}
-  #      with:
- #6783         github-token: "${{ secrets.GITHUB_TOKEN }}"
-  #        script: |
-  #          const script = require('.github/workflows/scripts/create_release.js')
-   #         await script(github, context, core)
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          script: |
+            const script = require('.github/workflows/scripts/create_release.js')
+            await script(github, context, core)
 
   wheel:
     name: Build Wheel
     runs-on: ${{ matrix.os }}
-  #  needs: release
+    needs: release
 
     strategy:
       fail-fast: false
@@ -58,9 +58,9 @@ jobs:
 
       - name: Setup ccache
         uses: hendrikmuhs/ccache-action@v1.2
-    #    with:
-    #      create-symlink: true
-    #      key: ${{ github.job }}-${{ matrix.python-version }}-${{ matrix.cuda-version }}
+        with:
+          create-symlink: true
+          key: ${{ github.job }}-${{ matrix.python-version }}-${{ matrix.cuda-version }}
 
       - name: Set up Linux Env
         if: ${{ runner.os == 'Linux' }}
@@ -91,15 +91,15 @@ jobs:
           echo "wheel_name=${wheel_name}" >> $GITHUB_ENV
           echo "asset_name=${asset_name}" >> $GITHUB_ENV
 
-    #  - name: Upload Release Asset
-     #   uses: actions/upload-release-asset@v1
-    #    env:
-      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #  with:
-     #     upload_url: ${{ needs.release.outputs.upload_url }}
-      #    asset_path: ./dist/${{ env.wheel_name }}
-      #    asset_name: ${{ env.asset_name }}
-      #    asset_content_type: application/*
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.release.outputs.upload_url }}
+          asset_path: ./dist/${{ env.wheel_name }}
+          asset_name: ${{ env.asset_name }}
+          asset_content_type: application/*
 
       # (Danielkinz): This last step will publish the .whl to pypi. Warning: untested
       # - name: Publish package
