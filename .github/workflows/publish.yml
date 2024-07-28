@@ -5,8 +5,8 @@ name: Create Release
 
 on:
   push:
-    tags:
-      - v*
+    branches:
+      - refactor-punica-kernel
 
 # Needed to create release and upload assets
 permissions:
